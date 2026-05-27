@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>给亲爱的</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #1a1a1a;
+    color: #e0d5c8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 24px;
+    text-align: center;
+  }
+  img {
+    max-width: 280px;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .poem {
+    font-size: 18px;
+    line-height: 2.4;
+    color: #c9b99a;
+    margin-bottom: 48px;
+    letter-spacing: 1px;
+  }
+  .sign {
+    font-size: 14px;
+    color: #8a7a6a;
+    letter-spacing: 2px;
+  }
+  .heart {
+    position: fixed;
+    bottom: 30px;
+    font-size: 24px;
+    color: #5a4a4a;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <img src="photo.jpg" alt="我们" onerror="this.style.display='none'">
+  <div class="poem">
+    春风再美也比不上你的笑<br>
+    没见过你的人不会明了
+  </div>
+  <div class="sign">— 玺玺酱</div>
+  <div class="heart">&#9829;</div>
+</body>
+</html>
