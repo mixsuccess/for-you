@@ -17,13 +17,28 @@
     font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
     padding: 24px;
     text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
   }
   img {
     max-width: 280px;
     width: 100%;
     border-radius: 12px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .counter {
+    font-size: 14px;
+    color: #a09080;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+  .counter .days {
+    font-size: 36px;
+    color: #c9b99a;
+    font-weight: 300;
+    display: block;
   }
   .poem {
     font-size: 18px;
@@ -43,20 +58,131 @@
     font-size: 24px;
     color: #5a4a4a;
     animation: pulse 2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.6s ease, color 0.6s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .heart.activated {
+    animation: none;
+    color: #c07070;
+    transform: scale(1.6);
   }
   @keyframes pulse {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
   }
+  .easter-egg {
+    position: fixed;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    font-size: 18px;
+    color: #c07070;
+    letter-spacing: 2px;
+    opacity: 0;
+    transition: opacity 1s ease, transform 1s ease;
+    pointer-events: none;
+  }
+  .easter-egg.reveal {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .easter-egg.fade {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 </style>
 </head>
 <body>
   <img src="photo.jpg" alt="我们" onerror="this.style.display='none'">
+
+  <div class="counter">
+    <span class="days" id="days"></span>
+    <span id="counter-label"></span>
+  </div>
+
   <div class="poem">
     春风再美也比不上你的笑<br>
     没见过你的人不会明了
   </div>
+
   <div class="sign">— 玺玺酱</div>
-  <div class="heart">&#9829;</div>
+
+  <div class="heart" id="heart">&#9829;</div>
+
+  <div class="easter-egg" id="easterEgg">爱你——亲爱的</div>
+
+<script>
+(function() {
+  // --- 纪念日计数 ---
+  var start = new Date(2026, 5, 14); // 6月14日（月份从0开始）
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  start.setHours(0,0,0,0);
+
+  var diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+  var label = document.getElementById('counter-label');
+  var daysEl = document.getElementById('days');
+
+  if (diff > 0) {
+    daysEl.textContent = diff;
+    label.textContent = '在一起的 · 第 ' + diff + ' 天';
+    daysEl.style.display = 'block';
+  } else if (diff === 0) {
+    daysEl.textContent = '';
+    daysEl.style.display = 'none';
+    label.textContent = '就是今天';
+  } else {
+    var countdown = Math.abs(diff);
+    daysEl.textContent = countdown;
+    daysEl.style.display = 'block';
+    label.textContent = '距离我们的纪念日还有 ' + countdown + ' 天';
+  }
+
+  // --- 隐藏彩蛋：长按心跳3秒 ---
+  var heart = document.getElementById('heart');
+  var egg = document.getElementById('easterEgg');
+  var timer = null;
+  var triggered = false;
+
+  function showEgg() {
+    triggered = true;
+    heart.classList.add('activated');
+    egg.classList.add('reveal');
+    egg.classList.remove('fade');
+    // 5秒后自动淡出
+    setTimeout(function() {
+      egg.classList.add('fade');
+      egg.classList.remove('reveal');
+      heart.classList.remove('activated');
+      setTimeout(function() { triggered = false; }, 1000);
+    }, 4000);
+  }
+
+  heart.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    if (triggered) return;
+    timer = setTimeout(showEgg, 3000);
+  });
+  heart.addEventListener('touchend', function() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  });
+  heart.addEventListener('touchmove', function() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  });
+
+  heart.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    if (triggered) return;
+    timer = setTimeout(showEgg, 3000);
+  });
+  heart.addEventListener('mouseup', function() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  });
+  heart.addEventListener('mouseleave', function() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  });
+})();
+</script>
 </body>
 </html>
